@@ -21,6 +21,7 @@ import io
 import tempfile
 import requests
 import zipfile
+import shutil
 
 # GitHub repository information
 GITHUB_REPO_OWNER = "HippotamusZz"
@@ -63,8 +64,6 @@ def download_and_extract_release():
         raise Exception(f"Failed to download from {zip_url}. Error: {e}")
 
 
-# Rest of your code...
-
 # Main Class
 class HPTMPanel(bpy.types.Panel):
     bl_label = "HPTM - Tools Shelfs UI"
@@ -81,7 +80,6 @@ class HPTMPanel(bpy.types.Panel):
         row.label(text=f"Tools Shelfs UI {GITHUB_RELEASE_TAG}", icon='BLENDER')
     
         # Purge Button
-        
         row.operator("addon.update_from_github", text="Update from GitHub", icon="URL")
         row = layout.row()
         row.operator("outliner.orphans_purge", text="Purge", icon="ERROR")
@@ -124,16 +122,14 @@ class HPTMPanel(bpy.types.Panel):
                 ("scale", "Scale"),
             ]
 
-            # Iterate over each property and assign to the corresponding column
             for i, (prop_name, prop_label) in enumerate(transform_point):
-                split = box.split(factor=0.33)  # Ensure to get a new split for each column
+                split = box.split(factor=0.33)
                 coll[i].prop(obj, prop_name, text=prop_label)
                 
         layout.separator(factor=1)
         row = layout.box()
         row.prop(context.scene.delete_objects_props, "target_string", text="")
 
-        # Add a button to set the target_string
         row.operator("object.set_target_string", text="Get Object Name", icon="LINKED")
 
         # Operator to delete objects by name
@@ -244,7 +240,6 @@ class HPTM_SetTargetStringOperator(bpy.types.Operator):
     bl_label = "Set Target String"
 
     def execute(self, context):
-        # Get the name of the first selected object
         selected_objects = context.selected_objects
         if selected_objects:
             context.scene.delete_objects_props.target_string = selected_objects[0].name
@@ -297,7 +292,6 @@ class HPTM_AddTextOperator(Operator):
             text_obj = bpy.context.active_object
             text_obj.data.body = custom_text
 
-        # Set custom font if available
         if context.scene.show_custom_font and context.scene.custom_font_path:
             text_obj.data.font = bpy.data.fonts.load(context.scene.custom_font_path)
 
@@ -321,10 +315,8 @@ class UpdateFromGitHubOperator(bpy.types.Operator):
     bl_description = "Update the add-on to the latest version from GitHub"
 
     def execute(self, context):
-        # Download and extract the latest release
         temp_dir = download_and_extract_release()
 
-        # Copy the contents to the add-on directory
         addon_dir = os.path.dirname(os.path.realpath(__file__))
         for item in os.listdir(temp_dir):
             src = os.path.join(temp_dir, item)
@@ -334,10 +326,8 @@ class UpdateFromGitHubOperator(bpy.types.Operator):
             else:
                 shutil.copy2(src, dst)
 
-        # Clean up temporary directory
         shutil.rmtree(temp_dir)
 
-        # Reload scripts to apply changes
         bpy.ops.script.reload()
 
         self.report({'INFO'}, "Add-on updated successfully")
