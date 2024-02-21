@@ -14,7 +14,6 @@ The **HPTM Tools Shelfs** is a custom add-on for Blender that enhances the user 
 - **Transform Controls:** Easily adjust the location, rotation, and scale of objects in the 3D view.
 - **Text Creation:** Add customizable text objects to the scene with options for custom text and fonts.
 - **Camera Creation:** Quickly insert a new camera into the scene for easy scene navigation.
-- **GitHub Integration:** Stay connected with the GitHub repository directly from the Blender interface.
 
 ## Installation
 
