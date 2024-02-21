@@ -7,7 +7,6 @@ bl_info = {
     "description": "Add a Tools Shelf UI for HPTM",
     "support": "COMMUNITY",
     "category": "3D View",
-    "warning": "wwww",
 }
 
 import bpy
@@ -20,6 +19,7 @@ GITHUB_REPO_NAME = "BlenderToolsShelftUI"
 GITHUB_RELEASE_TAG = ".".join(map(str, bl_info["version"]))
 GITHUB_REPO_URL = f"https://github.com/{GITHUB_REPO_OWNER}/{GITHUB_REPO_NAME}"
 
+
 # Main Class
 class HPTMPanel(Panel):
     bl_label = "HPTM - Tools Shelfs UI"
@@ -31,14 +31,14 @@ class HPTMPanel(Panel):
     def draw(self, context):
         layout = self.layout
         row = layout.row(align=True)
-        
+
         row.label(text=f"Tools Shelfs UI {GITHUB_RELEASE_TAG}", icon='BLENDER')
         row.operator("wm.open_github_page", text="GitHub Page", icon='URL')
         layout.separator(factor=1)
         row = layout.row(align=True)
         row.operator("outliner.orphans_purge", text="Purge", icon="ERROR")
         layout.separator(factor=1)
-        
+
         # Import & Export
         box = layout.box()
         box.label(text="Import & Export", icon='DOWNARROW_HLT')
@@ -89,14 +89,15 @@ class HPTMPanel(Panel):
         # Create Objects
         box = layout.box()
         box.label(text="Object", icon='OUTLINER_OB_MESH')
-        box.menu("OBJECT_MT_create_objects_menu", text="Add Object", icon='MESH_CUBE')
+        box.menu("OBJECT_MT_create_mesh_menu", text="Add Mesh", icon='MESH_CUBE')
+        box.menu("OBJECT_MT_create_curve_menu", text="Add Curve", icon='OUTLINER_OB_CURVE')
         layout.separator(factor=1)
 
         box = layout.box()
         box.label(text="Text", icon='FILE_FONT')
         split_text = box.split(factor=0.50)
         coll = [split_text.column() for _ in range(2)]
-        
+
         show_prop_dict = {
             "show_custom_text": ("custom_text", "Custom Text"),
             "show_custom_font": ("custom_font_path", "Custom Font"),
@@ -108,15 +109,15 @@ class HPTMPanel(Panel):
             if getattr(context.scene, key):
                 box.prop(context.scene, properties, text=value)
 
-
         # Create Text
         box.operator("object.add_text_operator", text="Add Text")
         layout.separator(factor=1)
 
-        # Create Camera
+        """# Create Camera
         box = layout.box()
         box.label(text="Camera", icon='CAMERA_DATA')
-        box.operator("object.camera_add", text="Camera", icon="VIEW_CAMERA")
+        box.operator("object.camera_add", text="Camera", icon="VIEW_CAMERA")"""
+
 
 # Sub Class
 # Import Panel Class
@@ -141,6 +142,7 @@ class HPTMPanel_IMPORT(Panel):
             row.operator(operator, text=label)
         layout.separator(factor=1)
 
+
 # Export Panel Class
 class HPTMPanel_EXPORT(Panel):
     bl_label = "Import & Export"
@@ -163,26 +165,48 @@ class HPTMPanel_EXPORT(Panel):
             row.operator(operator, text=label)
         layout.separator(factor=1)
 
-class HPTM_CreateObjectsMenu(Menu):
-    bl_idname = "OBJECT_MT_create_objects_menu"
+
+class HPTM_CreateMeshMenu(Menu):
+    bl_idname = "OBJECT_MT_create_mesh_menu"
     bl_label = "Create Objects"
 
     def draw(self, context):
         layout = self.layout
-        primitives = [
-            ("Cube", "MESH_CUBE"),
-            ("Cylinder", "MESH_CYLINDER"),
-            ("Ico_Sphere", "MESH_UVSPHERE"),
-            ("Uv_Sphere", "MESH_UVSPHERE"),
-            ("Plane", "MESH_PLANE"),
-            ("Circle", "MESH_CIRCLE"),
-            ("Cone", "MESH_CONE"),
-            ("Torus", "MESH_TORUS"),
+        primitives_mesh = [
+            ("cube", "Cube", "MESH_CUBE"),
+            ("cylinder", "Cylinder", "MESH_CYLINDER"),
+            ("ico_sphere", "IcoSphere", "MESH_UVSPHERE"),
+            ("uv_sphere", "UvSphere", "MESH_UVSPHERE"),
+            ("plane", "Plane", "MESH_PLANE"),
+            ("circle", "Circle", "MESH_CIRCLE"),
+            ("cone", "Cone", "MESH_CONE"),
+            ("torus", "Torus", "MESH_TORUS"),
         ]
 
-        for label, icon in primitives:
-            operator_name = "mesh.primitive_" + label.lower() + "_add"
+        for mesh_name, label, icon in primitives_mesh:
+            operator_name = "mesh.primitive_" + mesh_name + "_add"
             layout.operator(operator_name, text=label, icon=icon)
+
+
+class HPTM_CreateCurveMenu(Menu):
+    bl_idname = "OBJECT_MT_create_curve_menu"
+    bl_label = "Create Curves"
+
+    def draw(self, context):
+        layout = self.layout
+
+        primitives_curve = [
+            ("bezier_curve", "Bezier", "CURVE_BEZCURVE"),
+            ("bezier_circle", "Circle", "CURVE_BEZCIRCLE"),
+            ("nurbs_curve", "Nurbs Curve", "CURVE_NCURVE"),
+            ("circle_curve", "Nurbs Circle", "CURVE_NCIRCLE"),
+            ("nurbs_path", "Path", "CURVE_BEZCIRCLE"),
+        ]
+
+        for curve_name, label, icon in primitives_curve:
+            operator_name = "curve.primitive_" + curve_name + "_add"
+            layout.operator(operator_name, text=label, icon=icon)
+
 
 class HPTM_SetTargetStringOperator(Operator):
     bl_idname = "object.set_target_string"
@@ -194,6 +218,7 @@ class HPTM_SetTargetStringOperator(Operator):
             context.scene.delete_objects_props.target_string = selected_objects[0].name
 
         return {'FINISHED'}
+
 
 class HPTM_DeleteObjectsOperator(Operator):
     bl_idname = "object.delete_objects"
@@ -210,12 +235,14 @@ class HPTM_DeleteObjectsOperator(Operator):
         bpy.ops.object.delete()
         return {'FINISHED'}
 
+
 class HPTM_DeleteObjectsProps(bpy.types.PropertyGroup):
     target_string: bpy.props.StringProperty(
         name="Object Name",
         default="object name",
         description="Objects containing this string in their name will be deleted"
     )
+
 
 class HPTM_AddTextOperator(Operator):
     bl_label = "Add Text"
@@ -241,6 +268,7 @@ class HPTM_AddTextOperator(Operator):
 
         return {'FINISHED'}
 
+
 class HPTM_RepeatObjectOperator(Operator):
     bl_idname = "object.repeat_object"
     bl_label = "Repeat Object"
@@ -250,6 +278,7 @@ class HPTM_RepeatObjectOperator(Operator):
         bpy.ops.object.duplicate(linked=False)
         return {'FINISHED'}
 
+
 class HPTM_OpenGitHubPage(Operator):
     bl_idname = "wm.open_github_page"
     bl_label = "Open GitHub Page"
@@ -258,19 +287,28 @@ class HPTM_OpenGitHubPage(Operator):
         webbrowser.open(GITHUB_REPO_URL)
         return {'FINISHED'}
 
+
 # Register classes
 classes = (
+    HPTM_OpenGitHubPage,
+
     HPTMPanel,
+
     HPTMPanel_IMPORT,
     HPTMPanel_EXPORT,
-    HPTM_DeleteObjectsOperator,
-    HPTM_DeleteObjectsProps,
+
+    HPTM_CreateMeshMenu,
+    HPTM_CreateCurveMenu,
+
     HPTM_AddTextOperator,
-    HPTM_CreateObjectsMenu,
+
     HPTM_SetTargetStringOperator,
     HPTM_RepeatObjectOperator,
-    HPTM_OpenGitHubPage,
+
+    HPTM_DeleteObjectsOperator,
+    HPTM_DeleteObjectsProps,
 )
+
 
 def register():
     for cls in classes:
@@ -283,7 +321,6 @@ def register():
     bpy.types.Scene.show_custom_font = bpy.props.BoolProperty(name="Show Custom Font", default=False)
 
 
-
 def unregister():
     for cls in classes:
         bpy.utils.unregister_class(cls)
@@ -292,6 +329,7 @@ def unregister():
     del bpy.types.Scene.show_custom_text
     del bpy.types.Scene.custom_font_path
     del bpy.types.Scene.show_custom_font
+
 
 if __name__ == "__main__":
     register()
