@@ -20,7 +20,7 @@ The **HPTM Tools Shelfs** is a custom add-on for Blender that enhances the user 
 1. Download the latest release from the [GitHub Releases](https://github.com/HippotamusZz/BlenderToolsShelftUI/releases) page.
 2. Unzip: Extract the contents of the downloaded ZIP/RAR file.
 3. In Blender, go to `Edit` -> `Preferences` -> `Add-ons`.
-4. Click `Install` and select `HPTM_ToolsShelfs.py` file.
+4. Click `Install` and select `HPTM_ToolsShelfUI.py` file.
 5. Enable the "HPTM Tools Shelfs" add-on.
 
 ## Usage
