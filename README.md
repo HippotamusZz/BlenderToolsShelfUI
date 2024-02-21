@@ -33,9 +33,6 @@ The **HPTM Tools Shelfs** is a custom add-on for Blender that enhances the user 
 
 Explore the source code, report issues, and contribute to the development on the [GitHub repository](https://github.com/HippotamusZz/BlenderToolsShelftUI). Feel free to submit pull requests and help improve the add-on!
 
-## License
-
-This add-on is licensed under the [MIT License](LICENSE). See the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
