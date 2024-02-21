@@ -40,4 +40,4 @@ Special thanks to the Blender community for their support and feedback.
 
 ## Disclaimer
 
-**HPTM Tools Shelfs** is an independent project and is not officially endorsed by or affiliated with Blender Foundation.
+**HPTM Tools Shelfs** is an independent project and is not officially endorsed by Blender Foundation.
