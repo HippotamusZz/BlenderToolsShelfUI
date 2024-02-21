@@ -1,7 +1,7 @@
 # HPTM Tools Shelfs - Blender Add-on
 Blender HPTM Tools Shelfs Add-on
 
-The HPTM Tools Shelfs Add-on is a custom user interface for Blender, designed with a focus on learning and personal use. This add-on provides a convenient tools shelf UI with various functionalities to enhance the user experience within Blender.
+The HPTM Tools Shelfs Add-on is a custom user interface for Blender, designed with a focus on learning and personal usage. This add-on provides a convenient tools shelf UI with various functionalities to enhance the user experience within Blender.
 
 ## Overview
 
@@ -17,7 +17,7 @@ The **HPTM Tools Shelfs** is a custom add-on for Blender that enhances the user 
 
 ## Installation
 
-1. Download the latest release from the [GitHub Releases](https://github.com/HippotamusZz/BlenderToolsShelftUI/releases) page.
+1. Download the latest release from the  [GitHub Releases page.](https://github.com/HippotamusZz/BlenderToolsShelftUI/releases) page.
 2. Unzip: Extract the contents of the downloaded ZIP/RAR file.
 3. In Blender, go to `Edit` -> `Preferences` -> `Add-ons`.
 4. Click `Install` and select `HPTM_ToolsShelfUI.py` file.
@@ -31,7 +31,7 @@ The **HPTM Tools Shelfs** is a custom add-on for Blender that enhances the user 
 
 ## GitHub Repository
 
-Explore the source code, report issues, and contribute to the development on the [GitHub repository](https://github.com/HippotamusZz/BlenderToolsShelftUI). Feel free to submit pull requests and help improve the add-on!
+Explore the source code, report issues, and contribute to the development on the  [GitHub repository.](https://github.com/HippotamusZz/BlenderToolsShelftUI). Feel free to submit pull requests and help improve the add-on!
 
 
 ## Acknowledgments
@@ -40,4 +40,4 @@ Special thanks to the Blender community for their support and feedback.
 
 ## Disclaimer
 
-**HPTM Tools Shelfs** is an independent project and is not officially endorsed by Blender Foundation.
+**HPTM Tools Shelfs** is an independent project and is not officially endorsed by the Blender Foundation.
